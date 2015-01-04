@@ -1,0 +1,138 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Lato', Helvetica, serif; font-weight: 400;
+  overflow: hidden;
+  background-color: #000;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+body.invert {
+  background-color: #fff;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#top_line {
+  position: fixed;
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  z-index: 1001;
+}
+.invert #top_line {
+  background-color: #000;
+}
+
+#attractor_w, #attractor_w_inv {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -300px;
+  margin-top: -25px;
+  width: 600px;
+  height: 50px;
+  -webkit-transform: scale(0.48);
+  transform: scale(0.48);
+  z-index: 1000;
+}
+
+#social_layer {
+  position: fixed;
+  z-index: 1001;
+  width: 240px;
+  height: 50px;
+  right: 0px;
+  top: 0px;
+  color: #fff;
+}
+.invert #social_layer {
+  color: #000;
+}
+
+canvas {
+  position: fixed;
+}
+
+#black {
+  position: fixed;
+  z-index: 10000;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 1;
+}
+
+#nogl {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-left: -560px;
+  margin-top: -248px;
+  width: 1120px;
+  height: 496px;
+}
+
+.addthis_button_facebook, .addthis_button_twitter {
+  float: left;
+  margin-left: 12px;
+  margin-top: 27px;
+}
+.addthis_button_twitter {
+  margin-top: 28px;
+}
+#fb_ico {
+    width: 20px;
+    height: 20px;  
+    background-image: url(/images/fb_ico.png);
+    background-size: 20px 20px;
+}
+.invert #fb_ico {
+  background-image: url(/images/fb_ico_inv.png);
+}
+#twitter_ico {
+    width: 20px;
+    height: 20px;  
+    background-image: url(/images/twitter_ico.png);
+    background-size: 20px 20px;
+}
+.invert #twitter_ico {
+  background-image: url(/images/twitter_ico_inv.png);
+}
+
+
+#text_left {
+  position: fixed;
+  z-index: 1001;
+  top: 30px;
+  left: 35px;
+  color: #fff;
+}
+.invert #text_left {
+  color: #000;
+}
+#text_right {
+  float: left;
+  margin-top: 30px;
+  margin-right: 10px;
+}
+
+@media 
+(-webkit-min-device-pixel-ratio: 2), 
+(min-resolution: 1.3dppx) { 
+  #fb_ico { 
+      background-image: url(/images/fb_ico_ret.png);
+  }
+  #twitter_ico { 
+      background-image: url(/images/twitter_ico_ret.png);
+  }
+  .invert #fb_ico { 
+      background-image: url(/images/fb_ico_ret_inv.png);
+  }
+  .invert #twitter_ico { 
+      background-image: url(/images/twitter_ico_ret_inv.png);
+  }
+}

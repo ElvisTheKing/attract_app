@@ -1,0 +1,97 @@
+<html>
+	<head>
+		<title>My first Three.js app</title>
+		<style>canvas { width: 100%; height: 100% }</style>
+		<link href="stylesheets/style.css" rel="stylesheet">
+		
+	</head>
+	<body>
+
+
+
+	<div id="timeControl">
+		<div id="timeTimeline">
+			<div id="timeLine">
+				<div id="slider">
+					<div id="sliderCircleWrapper">
+						<div id="sliderCircle"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</body>
+		<script src="javascripts/lib/jquery-2.1.1.min.js"></script>
+		<script src="javascripts/lib/three.min.js"></script>
+		<script src="javascripts/draw.js"></script>
+
+  <script type='x-shader/x-fragment' id='quasiFragmentShader'>
+		uniform float time;
+		uniform float screenWidth;
+		uniform float screenHeight;
+		uniform sampler2D tex;
+		// uniform sampler2D sceneTex;
+		varying vec2 vUv;
+		const float PI = 3.1415926535897931;
+		const float scale = 108.0;
+		const float tscale = 100.0;
+		const float xpixels = 3.0;
+		const float ypixels = 3.0;
+		const int symmetry = 7;
+		float adj(float n, float m) {
+	    return scale * ((2.0 * n / (m-1.0)) - 1.0);
+		}
+		vec2 point(vec2 src) {
+			return vec2(adj(src.x,ypixels), adj(src.y,ypixels));
+		}
+		float wave(vec2 p, float th) {
+			float t = fract(time/tscale);
+			t *= 2.0 * PI;
+			float sth = sin(th);
+			float cth = cos(th);
+			return (cos (cth*p.x + sth*p.y + t) + 1.0) / 2.0;
+		}
+		float combine(vec2 p) {
+			float sum = 0.0;
+			for (int i = 0; i < symmetry; i++){
+			    sum += wave(point(p), float(i)*PI/float(symmetry));
+			}
+			return mod(floor(sum), 2.0) == 0.0 ? fract(sum) : 1.0 - fract(sum);
+		}
+		void main(void) {
+			vec2 UV = 1. * gl_FragCoord.xy / vec2(screenWidth, screenHeight);
+			float s = 0.0;
+			vec4 c;
+			float aspect = screenWidth / screenHeight;
+			float k = clamp((screenWidth + screenHeight) / 800.0, 1.0, 10.0);
+			s = combine(vec2(UV.x*xpixels * k, UV.y*ypixels * k / aspect));
+
+	vec3 color;
+	color.r = sin(UV.x*5.-0.+time*.01);
+	color.g = sin(UV.x*5.-4.0-time*.01);
+	color.b = sin(UV.x*5.-4.+time*.01);
+	float pwr = 1.0 - 0.2*1.0*sin(time * 0.01);
+	float a = pow(sin(UV.x*3.1415),pwr) * pow(sin(UV.y*3.1415),pwr);	
+	vec4 col = mix(vec4(vec3(a),1.0), vec4(color,1.), 0.1) * 0.2 + 0.0;
+
+			float inten = (col.r + col.g + col.b) / 3.0;
+			s = s * inten * 2.0 + 1.0;
+
+			vec4 texCol = texture2D( tex, vec2( (vUv.x  - ( screenWidth - screenHeight ) / ( 2.0 *  screenWidth )) * aspect, vUv.y ) );
+
+			gl_FragColor = (col * s   - texCol * 0.1) * 6.0;
+			// gl_FragColor = (col * s + s * 0.05   - texCol * 0.15) * 4.0;
+			// gl_FragColor = col * s;
+			// gl_FragColor = sceneCol;
+		}
+  </script>
+  <script type='x-shader/x-vertex' id='passThroughVertexShader'>
+		varying vec2 vUv;
+		void main()
+		{
+			vUv = uv;
+			gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+		}
+	</script>
+</html>
